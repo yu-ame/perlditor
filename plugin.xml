@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="info.yu_ame.perlditor.PerlEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"            
+            extensions="pl,pm"
+            icon="icons/sample2.gif"
+            id="info.yu_ame.perlditor"
+            name="poor perl editor">
+      </editor>
+   </extension>
+
+<extension point="org.eclipse.ui.commands">
+  <category id="info.yu_ame.perlditor.category" name="Sample"/>
+  <command  categoryId="info.yu_ame.perlditor.category" 
+   id="info.yu_ame.perlditor.command" name="command1"/>
+</extension>
+   
+<extension point="org.eclipse.ui.commands">
+  <category id="info.yu_ame.perlditor.category2" name="Sample"/>
+  <command  categoryId="info.yu_ame.perlditor.category2" 
+   id="info.yu_ame.perlditor.command2" name="command2"/>
+</extension>
+
+
+<extension point="org.eclipse.ui.bindings">
+  <key sequence="M1+9"
+   commandId="info.yu_ame.perlditor.command" 
+   schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+  </key>  
+</extension>
+
+<extension point="org.eclipse.ui.bindings">
+  <key sequence="M1+8"
+   commandId="info.yu_ame.perlditor.command2" 
+   schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+  </key>
+</extension>
+   
+<extension point="org.eclipse.ui.handlers">
+  <handler
+    commandId="info.yu_ame.perlditor.command"
+    class="info.yu_ame.perlditor.handler.OpenTestFileHandler">
+  </handler>
+</extension>   
+
+<extension point="org.eclipse.ui.handlers">
+  <handler
+    commandId="info.yu_ame.perlditor.command2"
+    class="info.yu_ame.perlditor.handler.AutoCharsetHandler">
+  </handler>
+</extension>   
+
+<extension point="org.eclipse.core.runtime.preferences">
+<initializer class="info.yu_ame.perlditor.PerlPreferenceInitializer"/>
+</extension>
+
+
+<extension
+point="org.eclipse.ui.preferencePages">
+<page
+class="info.yu_ame.perlditor.PerlPreferencePage"
+id="info.yu_ame.perlditor"
+name="poor perl editor"/>
+</extension>
+
+</plugin>

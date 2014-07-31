@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Perlditor
+Bundle-SymbolicName: info.yu_ame.perlditor;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: info.yu_ame.perlditor.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.jface.text,
+ org.eclipse.ui.editors,
+ org.eclipse.core.filesystem,
+ org.eclipse.core.resources,
+ org.eclipse.ui.ide
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: jar/ganymed-ssh2-261.jar,
+ .
