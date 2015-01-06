@@ -67,5 +67,18 @@ class="info.yu_ame.perlditor.PerlPreferencePage"
 id="info.yu_ame.perlditor"
 name="poor perl editor"/>
 </extension>
+<extension
+      point="org.eclipse.ui.propertyPages">
+   <page
+         class="info.yu_ame.perlditor.PerlPropertyPage"
+         id="info.yu_ame.perlditor.perlPropertyPage"
+         name="perlditor property">
+     <enabledWhen>
+        <adapt type="org.eclipse.core.resources.IProject"/>
+     </enabledWhen>         
+   </page>
+</extension>
+
+
 
 </plugin>

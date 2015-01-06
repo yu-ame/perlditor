@@ -33,17 +33,21 @@ public class SshCommander {
         return sshCommander;
     }
 
+    
+    
+    
     public String execute(String command){
+    	System.out.println("command:" + command);
         String str = "";
+        String err = "";
         try{
             Session session = conn.openSession();
             session.execCommand(command);
             str = streamToString(session.getStdout());         
-
+            err = streamToString(session.getStderr());
             session.close();   	   	
         }catch(Exception e){
-            e.printStackTrace();
-            
+            e.printStackTrace();            
         }
         return str;
     }
