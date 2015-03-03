@@ -83,68 +83,68 @@ public class PerlEditor extends TextEditor {
         
       
 
-    	
-    	Thread th = new Thread(new CheckSyntaxRunnable(file));
-    	th.start();
-
         
+        Thread th = new Thread(new CheckSyntaxRunnable(file));
+        th.start();
+
     }
     
     private class CheckSyntaxRunnable implements Runnable {
 
-    	IFile file;
-    	String perlPath;
-    	String projectPath;
-    	
-    	public CheckSyntaxRunnable(IFile file){
-    		this.file = file;
-    		IProject project = file.getProject();
-    		perlPath = PerlPropertyPage.getValue(project, PerlPropertyPage.KEY_PERL_PATH);
-    		projectPath = PerlPropertyPage.getValue(project, PerlPropertyPage.KEY_PROJECT_PATH);
+        IFile file;
+        String perlPath;
+        String projectPath;
+        
+        public CheckSyntaxRunnable(IFile file){
+            this.file = file;
+            IProject project = file.getProject();
+            perlPath = PerlPropertyPage.getValue(project, PerlPropertyPage.KEY_PERL_PATH);
+            projectPath = PerlPropertyPage.getValue(project, PerlPropertyPage.KEY_PROJECT_PATH);
 
-    	}
-    	
-    	private String convertInputStreamToString(InputStream is) throws IOException {
-	        InputStreamReader reader = new InputStreamReader(is);
-	        StringBuilder builder = new StringBuilder();
-	        char[] buf = new char[1024];
-	        int numRead;
-	        while (0 <= (numRead = reader.read(buf))) {
-	            builder.append(buf, 0, numRead);
-	        }
-	        return builder.toString();
-    	}    	
-    	
-		@Override
-		public void run() {			
-			
-	        String fileExtension = file.getFileExtension();
-	        String filePath = file.getProjectRelativePath().toString();     
-	        String returnStr = "";
-	        if(fileExtension.equals("pm")){
-	        	String text;
-				try {
-					text = convertInputStreamToString(file.getContents());
-				} catch (IOException | CoreException e) {
-					return;
-				}
+        }
+        
+        private String convertInputStreamToString(InputStream is) throws IOException {
+            InputStreamReader reader = new InputStreamReader(is);
+            StringBuilder builder = new StringBuilder();
+            char[] buf = new char[1024];
+            int numRead;
+            while (0 <= (numRead = reader.read(buf))) {
+                builder.append(buf, 0, numRead);
+            }
+            reader.close();
+            return builder.toString();
+        }        
+        
+        @Override
+        public void run() {            
+            
+            String fileExtension = file.getFileExtension();
+            String filePath = file.getProjectRelativePath().toString();     
+            String returnStr = "";
+            if(fileExtension.equals("pm")){
+                String text;
+                try {
+                    text = convertInputStreamToString(file.getContents());
+                } catch (IOException | CoreException e) {
+                    return;
+                }
 
-	            Pattern p_package = Pattern.compile("package\\s+([a-zA-Z0-9:]+);");
-	            Matcher m_package = p_package.matcher(text);
-	            if(!m_package.find()){	 
-	                return;
-	            }        	
-	            String s_package = m_package.group(1);        	
-	            returnStr = SshCommander.getInstance().execute(perlPath + " -wc -e \"use " + s_package + ";\" 2>&1");        	        	
-	        }else if(fileExtension.equals("pl")){
-	            returnStr = SshCommander.getInstance().execute(perlPath + " -wc "+ projectPath +"/" + filePath + " 2>&1");        	
-	        }
-	        
-	        if(returnStr.matches(".*syntax\\sOK.*")){
-	        	
-	        }else{
-	        	PerlConsole.println(returnStr);
-	        }			
-		}
+                Pattern p_package = Pattern.compile("package\\s+([a-zA-Z0-9:]+);");
+                Matcher m_package = p_package.matcher(text);
+                if(!m_package.find()){     
+                    return;
+                }            
+                String s_package = m_package.group(1);            
+                returnStr = SshCommander.getInstance().execute(perlPath + " -wc -e \"use " + s_package + ";\" 2>&1");                        
+            }else if(fileExtension.equals("pl")){
+                returnStr = SshCommander.getInstance().execute(perlPath + " -wc "+ projectPath +"/" + filePath + " 2>&1");            
+            }
+            
+            if(returnStr.matches(".*syntax\\sOK.*")){
+                
+            }else{
+                PerlConsole.println(returnStr);
+            }            
+        }
     }
 }
